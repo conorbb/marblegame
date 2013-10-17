@@ -3,11 +3,14 @@ package com.barconr.games.marblegame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 
 public class Assets{
 	
 	public static final int VIRTUAL_SCREEN_HEIGHT = 480;
 	public static final int VIRTUAL_SCREEN_WIDTH = 800;
+	public static TiledMap mazemap;
 	
 	public static final float HEIGHT_METERS = 6;
 	public static final float WIDTH_METERS = 10;
@@ -26,10 +29,13 @@ public class Assets{
 	public static void load(){
 		gameAtlas = new TextureAtlas(Gdx.files.internal("gfx/marble.pack"));
 		marble = new TextureRegion(gameAtlas.findRegion("marb"));
+		mazemap = new TmxMapLoader().load("tiles/test map.tmx");
+		
 	}
 	
 	public static void dispose(){
 		gameAtlas.dispose();
+		mazemap.dispose();
 	}
 
 }

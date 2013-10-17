@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -32,27 +34,36 @@ public class MarbleGame implements ApplicationListener {
     static final int BOX_VELOCITY_ITERATIONS=6;  
     static final int BOX_POSITION_ITERATIONS=2;  
     Box2DDebugRenderer debugRenderer;
+    OrthogonalTiledMapRenderer tilerender; 
+    
     Matrix4 debugProj;
-	
+
+    private TiledMap map;
 	@Override
 	public void create() {
+		Assets.load();
 		
-
+		
 		debugRenderer = new Box2DDebugRenderer();  
 		
 		camera = new OrthographicCamera(Assets.VIRTUAL_SCREEN_WIDTH,Assets.VIRTUAL_SCREEN_HEIGHT);
 		camera.position.set(Assets.VIRTUAL_SCREEN_WIDTH/2f,Assets.VIRTUAL_SCREEN_HEIGHT/2f, 0);
 		camera.update();
-		Assets.load();
+		
+		tilerender = new OrthogonalTiledMapRenderer(Assets.mazemap);
 		debugProj = new Matrix4(camera.combined);
 		debugProj.scale(Assets.PIXELS_PER_METER, Assets.PIXELS_PER_METER, 1);
 		batcher = new SpriteBatch();
 		batcher.setProjectionMatrix(camera.combined);
 		batcher.enableBlending();
 		createBoxShit();
+		tilerender.setView(camera);
 		debugRenderer = new Box2DDebugRenderer();
 		
 	}
+	
+	
+	
 	
 	public void createBoxShit(){
 		world = new World(new Vector2(0, -9), true); 
@@ -116,7 +127,7 @@ public class MarbleGame implements ApplicationListener {
 //		batcher.end();
 //		
 		 
-		
+		tilerender.render();
 		debugRenderer.render(world, debugProj);
 		//System.out.println(bodyDef.position.x*Assets.PIXELS_PER_METER +""+bodyDef.position.y * Assets.PIXELS_PER_METER);
 		//world.step(BOX_STEP, BOX_VELOCITY_ITERATIONS, BOX_POSITION_ITERATIONS);  
@@ -127,6 +138,9 @@ public class MarbleGame implements ApplicationListener {
 
 	@Override
 	public void resize(int width, int height) {
+		camera.viewportWidth = width;
+		camera.viewportHeight = height;
+		camera.update();
 	}
 
 	@Override
