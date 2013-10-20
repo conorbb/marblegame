@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="50" height="50" tilewidth="16" tileheight="16">
+ <tileset firstgid="1" name="TileA2" tilewidth="16" tileheight="16">
+  <image source="TileA2.png" width="512" height="384"/>
+  <terraintypes>
+   <terrain name="New Terrain" tile="-1"/>
+  </terraintypes>
+  <tile id="284">
+   <properties>
+    <property name="passable" value=""/>
+   </properties>
+  </tile>
+  <tile id="285">
+   <properties>
+    <property name="passable" value=""/>
+   </properties>
+  </tile>
+  <tile id="286">
+   <properties>
+    <property name="passable" value=""/>
+   </properties>
+  </tile>
+  <tile id="287">
+   <properties>
+    <property name="passable" value=""/>
+   </properties>
+  </tile>
+  <tile id="305">
+   <properties>
+    <property name="grass" value="true"/>
+   </properties>
+  </tile>
+  <tile id="316">
+   <properties>
+    <property name="passable" value=""/>
+   </properties>
+  </tile>
+  <tile id="317">
+   <properties>
+    <property name="passable" value=""/>
+   </properties>
+  </tile>
+  <tile id="318">
+   <properties>
+    <property name="passable" value=""/>
+   </properties>
+  </tile>
+  <tile id="319">
+   <properties>
+    <property name="passable" value=""/>
+   </properties>
+  </tile>
+  <tile id="338">
+   <properties>
+    <property name="grass" value="true"/>
+   </properties>
+  </tile>
+  <tile id="348">
+   <properties>
+    <property name="passable" value=""/>
+   </properties>
+  </tile>
+  <tile id="349">
+   <properties>
+    <property name="passable" value=""/>
+   </properties>
+  </tile>
+  <tile id="350">
+   <properties>
+    <property name="passable" value=""/>
+   </properties>
+  </tile>
+  <tile id="351">
+   <properties>
+    <property name="passable" value=""/>
+   </properties>
+  </tile>
+  <tile id="476">
+   <properties>
+    <property name="block" value=""/>
+   </properties>
+  </tile>
+  <tile id="477">
+   <properties>
+    <property name="block" value="true"/>
+   </properties>
+  </tile>
+  <tile id="478">
+   <properties>
+    <property name="block" value="true"/>
+   </properties>
+  </tile>
+  <tile id="479">
+   <properties>
+    <property name="block" value="true"/>
+   </properties>
+  </tile>
+  <tile id="508">
+   <properties>
+    <property name="block" value="true"/>
+   </properties>
+  </tile>
+  <tile id="509">
+   <properties>
+    <property name="block" value="true"/>
+   </properties>
+  </tile>
+  <tile id="510">
+   <properties>
+    <property name="block" value="true"/>
+   </properties>
+  </tile>
+  <tile id="511">
+   <properties>
+    <property name="block" value="true"/>
+   </properties>
+  </tile>
+  <tile id="540">
+   <properties>
+    <property name="block" value="true"/>
+   </properties>
+  </tile>
+  <tile id="541">
+   <properties>
+    <property name="block" value="true"/>
+   </properties>
+  </tile>
+  <tile id="542">
+   <properties>
+    <property name="block" value="true"/>
+   </properties>
+  </tile>
+  <tile id="543">
+   <properties>
+    <property name="block" value="true"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="Tile Layer 1" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztl2uOozAQhKcP4uUkDCchOXmugjYrTUlFUW0gsZnRan6UwiPg+rrbdvOIj4/Hr/4rlYP689TwA/xmvseD+klszvd8UBnXd7Bkvm9P3b/8ZMq4Pp+aLs6F8z29KH3X1RwYF37ubwjvuJIBNQUOaPj6Ra2XHWXv6O0f81DrANcnOh7i+Jqlub2KAzVU5DrPb/jLBBaX2545Yb/wP8aWg+9p3ph7Tv7TOycYHx6VYZB7LsYQ1ldl4OMrGDB+Ebn4MifWJOe7xDUc7JPHHsPnYDKcjhv+e3PsMcyRz4NxR7P57cnh6kXHhRf1WdMtudaDo8agHEelfYBTa449v0c8Ya7wHs9rtVNrjkds19fJXFtiuwYvsd5vcI3PeU9itt4cjiE7h+cx1nOm9jx6hR57ehY3rhmnJfx3kh67OusxR7i22VeJbbzZ0yLnbn7oM9wD9GL4pzn8+rqcUJYL9CrZ2jscOD7CoX0762bypvnQY83FvcJQYzqbD/Wg4jorwlFiyzmb+FzFwR5UzKD5GOUY/z/DMVR0hoMZtGeF5znWc6bE2u8S6zq8Oh+onTk8B/qVEts5ozXH93gfgXpxqDd4drnRa0cZuIep1dXe8V5N8beo49Le1fXwNQbtr1ru58qBGuYYg8nVGa9tzKAc+lzr/TzjAIurLY7xENs5hWc+6T8ai9b7ueNAfam0fweP3tdzx9H6Wwr+tY4wrnrSfEzC5zzj+hUcWkdZTWk+mAv3OA7M0ouDa0nj72rqzHfUGL7eenIoT0l8uO+ihf4/mueu5mBpLek+4WJfYh0PrUWuyaETh5sP6oPXU/arfTvi4uLALK05MKbOBYzJ1/RbqSaOieNpycE5QEyVSfm4FkeTD31Ptqe04uA8cL3DD/eJylvomDn4HbU65XW6RS7QN6jHrN7APIbPR5ZX7QOgVziKOa/1U6o5zn1H6TqVqWU+EFsX/1dVW6v5/rscOtaer1quzuodDq2rV7h75OvdfPzqe1We+gvLJ0tS
+  </data>
+ </layer>
+</map>
