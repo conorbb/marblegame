@@ -41,11 +41,12 @@ public class MarbleGame implements ApplicationListener {
 	BodyDef bodyDef;
 	CircleShape dynamicCircle;
 	Body circleBody;
-
+	Sprite marbleSprite;
     static final float BOX_STEP=1/60f;  
     static final int BOX_VELOCITY_ITERATIONS=6;  
     static final int BOX_POSITION_ITERATIONS=2;  
     Box2DDebugRenderer debugRenderer;
+    
     OrthogonalTiledMapRenderer tilerender; 
     
     Matrix4 debugProj;
@@ -61,7 +62,7 @@ public class MarbleGame implements ApplicationListener {
 		camera = new OrthographicCamera(Assets.VIRTUAL_SCREEN_WIDTH,Assets.VIRTUAL_SCREEN_HEIGHT);
 		camera.position.set(Assets.VIRTUAL_SCREEN_WIDTH/2f,Assets.VIRTUAL_SCREEN_HEIGHT/2f, 0);
 		camera.update();
-		
+		marbleSprite = new Sprite(Assets.marble);
 
 		
 		tilerender = new OrthogonalTiledMapRenderer(Assets.mazemap);
@@ -100,6 +101,7 @@ public class MarbleGame implements ApplicationListener {
         
         
         bodyDef = new BodyDef();  
+        
         //bodyDef.
         bodyDef.type = BodyType.DynamicBody; 
         bodyDef.position.set(3f ,3f);  
@@ -256,10 +258,16 @@ public class MarbleGame implements ApplicationListener {
 			
 		}
 		
+		
+		
 		tilerender.render();
 		debugRenderer.render(world, debugProj);
 		//System.out.println(bodyDef.position.x*Assets.PIXELS_PER_METER +""+bodyDef.position.y * Assets.PIXELS_PER_METER);
 		//world.step(BOX_STEP, BOX_VELOCITY_ITERATIONS, BOX_POSITION_ITERATIONS);  
+		batcher.begin();
+		marbleSprite.setPosition(3, 4);
+		marbleSprite.draw(batcher);
+		batcher.end();
 		world.step(f, BOX_VELOCITY_ITERATIONS, BOX_POSITION_ITERATIONS);
 		
 		
