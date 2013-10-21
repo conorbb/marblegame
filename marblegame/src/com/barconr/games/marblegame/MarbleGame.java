@@ -61,9 +61,11 @@ public class MarbleGame implements ApplicationListener {
 		
 		camera = new OrthographicCamera(Assets.VIRTUAL_SCREEN_WIDTH,Assets.VIRTUAL_SCREEN_HEIGHT);
 		camera.position.set(Assets.VIRTUAL_SCREEN_WIDTH/2f,Assets.VIRTUAL_SCREEN_HEIGHT/2f, 0);
+		//camera.
 		camera.update();
+		//camera.
 		marbleSprite = new Sprite(Assets.marble);
-
+		marbleSprite.setBounds(0, 0, 32, 32);
 		
 		tilerender = new OrthogonalTiledMapRenderer(Assets.mazemap);
 		//createBoxShit();
@@ -213,8 +215,8 @@ public class MarbleGame implements ApplicationListener {
 		
 
         dynamicCircle = new CircleShape();  
-        dynamicCircle.setRadius(0.25f );  
-     
+        dynamicCircle.setRadius(16/Assets.PIXELS_PER_METER );  
+        
        //System.out.println(70 / Assets.PIXELS_PER_METER);
         
         FixtureDef fixtureDef = new FixtureDef();  
@@ -251,9 +253,12 @@ public class MarbleGame implements ApplicationListener {
 		if(Gdx.input.justTouched()){
 			float x = Gdx.input.getX();
 			float y = Gdx.input.getY();
+			System.out.println("**************");
 			System.out.println("x:"+x + " y: "+ y +" before unproject");
 			Vector3 v3 = new Vector3(x, y, 0);
-			//camera.unproject(v3);
+
+			
+			camera.unproject(v3);
 			createTestBall(v3.x,v3.y);
 			
 		}
@@ -264,22 +269,29 @@ public class MarbleGame implements ApplicationListener {
 		debugRenderer.render(world, debugProj);
 		//System.out.println(bodyDef.position.x*Assets.PIXELS_PER_METER +""+bodyDef.position.y * Assets.PIXELS_PER_METER);
 		//world.step(BOX_STEP, BOX_VELOCITY_ITERATIONS, BOX_POSITION_ITERATIONS);  
+		
+		
 		batcher.begin();
-		marbleSprite.setPosition(1*Assets.PIXELS_PER_METER, 3*Assets.PIXELS_PER_METER);
+		Vector2 v2 = circleBody.getWorldCenter();
+		
+		marbleSprite.setPosition((v2.x*Assets.PIXELS_PER_METER)-16, (v2.y*Assets.PIXELS_PER_METER)-16);
 		marbleSprite.draw(batcher);
+		
 		batcher.end();
-		world.step(f, BOX_VELOCITY_ITERATIONS, BOX_POSITION_ITERATIONS);
+		world.step(BOX_STEP, BOX_VELOCITY_ITERATIONS, BOX_POSITION_ITERATIONS);
 		
 		
 	}
 
 	private void createTestBall(float x, float y) {
 			System.out.println("x: "+x+" y: "+ y+"Uprojected");
-			System.out.println("x: "+x/Assets.PIXELS_PER_METER+" y: "+ y/Assets.PIXELS_PER_METER+" * pixels per meter");
+			System.out.println("x: "+x*Assets.METERS_PER_PIXEL+" y: "+ y*Assets.METERS_PER_PIXEL+" * pixels per meter");
 		 	BodyDef bodyDef1 = new BodyDef();  
 	        //bodyDef.
 	        bodyDef1.type = BodyType.DynamicBody; 
-	        bodyDef1.position.set(x/Assets.PIXELS_PER_METER ,y / Assets.PIXELS_PER_METER);  
+	        
+	        bodyDef1.position.set((x*Assets.METERS_PER_PIXEL),(y *Assets.METERS_PER_PIXEL));  
+	        
 	        Body circleBody2 = world.createBody(bodyDef1);  
 	        
 			
