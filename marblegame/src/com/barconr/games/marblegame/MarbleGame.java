@@ -24,6 +24,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -105,7 +106,7 @@ public class MarbleGame implements ApplicationListener {
         circleBody = world.createBody(bodyDef);  
         
         
-        dynamicCircle = new CircleShape();  
+        CircleShape dynamicCircle = new CircleShape();  
         dynamicCircle.setRadius(70 / Assets.PIXELS_PER_METER);  
         System.out.println("Radius" + 70 / Assets.PIXELS_PER_METER);
        //System.out.println(70 / Assets.PIXELS_PER_METER);
@@ -173,12 +174,15 @@ public class MarbleGame implements ApplicationListener {
 					//Draw box for fixture that is impassible
 					PolygonShape squareShape = new PolygonShape();
 			        BodyDef squareBodyDef = new BodyDef();
-			        squareBodyDef.type = BodyType.StaticBody;
+			        squareBodyDef.type = BodyType.StaticBody;	//Static body which won't move
 			        //Box position
-			        squareBodyDef.position.set( new Vector2(j* Assets.METERS_PER_PIXEL*16, (layerHeight-i-1)* Assets.METERS_PER_PIXEL*16));
+			        squareBodyDef.position.set( new Vector2((j* Assets.METERS_PER_PIXEL*tileWidth), (layerHeight-i-1)* Assets.METERS_PER_PIXEL*tileHeight));
+			        //Correction for fact Box2Ds squares are half width/height from center point
+			        squareBodyDef.position.add(tileWidth/2*Assets.METERS_PER_PIXEL, tileHeight/2*Assets.METERS_PER_PIXEL);	
+			        
 			        Body squareBody = world.createBody(squareBodyDef);
 			        //Size of box
-			        squareShape.setAsBox(16 * Assets.METERS_PER_PIXEL, 16 * Assets.METERS_PER_PIXEL);
+			        squareShape.setAsBox(tileWidth/2 * Assets.METERS_PER_PIXEL, tileHeight/2 * Assets.METERS_PER_PIXEL);
 			        FixtureDef fixDefSquare = new FixtureDef();
 			        fixDefSquare.shape = squareShape;
 			        fixDefSquare.density = 0.1f;
@@ -195,6 +199,31 @@ public class MarbleGame implements ApplicationListener {
 			}
 			System.out.println();
 		}
+		
+		
+		
+        bodyDef = new BodyDef();  
+        //bodyDef.
+        bodyDef.type = BodyType.DynamicBody; 
+        bodyDef.position.set(3f ,3f);  
+        circleBody = world.createBody(bodyDef);  
+        
+		
+
+        dynamicCircle = new CircleShape();  
+        dynamicCircle.setRadius(0.25f );  
+     
+       //System.out.println(70 / Assets.PIXELS_PER_METER);
+        
+        FixtureDef fixtureDef = new FixtureDef();  
+        fixtureDef.shape = dynamicCircle;  
+        fixtureDef.density = 0.1f;  
+        fixtureDef.friction = 1f;  
+        
+        fixtureDef.restitution = 0.5f; 
+        
+        //fixtureDef.
+        circleBody.createFixture(fixtureDef);  
 		
 		
 		
@@ -217,7 +246,15 @@ public class MarbleGame implements ApplicationListener {
 //		batcher.draw(Assets.marble,circleBody.getPosition().x,circleBody.getPosition().y * Assets.PIXELS_PER_METER);
 //		batcher.end();
 //		
-		
+		if(Gdx.input.justTouched()){
+			float x = Gdx.input.getX();
+			float y = Gdx.input.getY();
+			System.out.println("x:"+x + " y: "+ y +" before unproject");
+			Vector3 v3 = new Vector3(x, y, 0);
+			//camera.unproject(v3);
+			createTestBall(v3.x,v3.y);
+			
+		}
 		
 		tilerender.render();
 		debugRenderer.render(world, debugProj);
@@ -227,6 +264,38 @@ public class MarbleGame implements ApplicationListener {
 		
 		
 	}
+
+	private void createTestBall(float x, float y) {
+			System.out.println("x: "+x+" y: "+ y+"Uprojected");
+			System.out.println("x: "+x/Assets.PIXELS_PER_METER+" y: "+ y/Assets.PIXELS_PER_METER+" * pixels per meter");
+		 	BodyDef bodyDef1 = new BodyDef();  
+	        //bodyDef.
+	        bodyDef1.type = BodyType.DynamicBody; 
+	        bodyDef1.position.set(x/Assets.PIXELS_PER_METER ,y / Assets.PIXELS_PER_METER);  
+	        Body circleBody2 = world.createBody(bodyDef1);  
+	        
+			
+	        CircleShape dynamicCircle1;
+	        dynamicCircle1 = new CircleShape();  
+	        dynamicCircle1.setRadius(0.25f );  
+	     
+	       //System.out.println(70 / Assets.PIXELS_PER_METER);
+	        
+	        FixtureDef fixtureDef1 = new FixtureDef();  
+	        fixtureDef1.shape = dynamicCircle1;  
+	        fixtureDef1.density = 0.1f;  
+	        fixtureDef1.friction = 1f;  
+	        
+	        fixtureDef1.restitution = 0.5f; 
+	        
+	        //fixtureDef.
+	        circleBody2.createFixture(fixtureDef1);  
+			
+		
+	}
+
+
+
 
 	@Override
 	public void resize(int width, int height) {
