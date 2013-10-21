@@ -265,7 +265,7 @@ public class MarbleGame implements ApplicationListener {
 		//System.out.println(bodyDef.position.x*Assets.PIXELS_PER_METER +""+bodyDef.position.y * Assets.PIXELS_PER_METER);
 		//world.step(BOX_STEP, BOX_VELOCITY_ITERATIONS, BOX_POSITION_ITERATIONS);  
 		batcher.begin();
-		marbleSprite.setPosition(3, 4);
+		marbleSprite.setPosition(1*Assets.PIXELS_PER_METER, 3*Assets.PIXELS_PER_METER);
 		marbleSprite.draw(batcher);
 		batcher.end();
 		world.step(f, BOX_VELOCITY_ITERATIONS, BOX_POSITION_ITERATIONS);
