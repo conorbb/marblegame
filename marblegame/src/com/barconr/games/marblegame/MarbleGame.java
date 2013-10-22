@@ -47,6 +47,9 @@ public class MarbleGame implements ApplicationListener {
     static final int BOX_POSITION_ITERATIONS=2;  
     Box2DDebugRenderer debugRenderer;
     
+    Vector2 startPosition;
+    Vector2 endPostion;
+    
     OrthogonalTiledMapRenderer tilerender; 
     
     Matrix4 debugProj;
@@ -174,7 +177,21 @@ public class MarbleGame implements ApplicationListener {
 			
 			for(int j=0;j<layerWidth;j++){
 				boolean impassibleBlock = tilelayer.getCell(j, layerHeight-i-1).getTile().getProperties().containsKey("block");
-				if(impassibleBlock){
+				if(tilelayer.getCell(j, layerHeight-i-1).getTile().getProperties().containsKey("start")){
+					if(startPosition==null){
+						
+						startPosition = new Vector2(j*tileWidth*Assets.METERS_PER_PIXEL,i*tileHeight*Assets.METERS_PER_PIXEL);
+						System.out.println(startPosition);
+					}
+					
+					
+				}
+				if(tilelayer.getCell(j, layerHeight-i-1).getTile().getProperties().containsKey("end")){
+					
+				}
+				
+					if(impassibleBlock){
+				
 					//Draw box for fixture that is impassible
 					PolygonShape squareShape = new PolygonShape();
 			        BodyDef squareBodyDef = new BodyDef();
@@ -193,15 +210,15 @@ public class MarbleGame implements ApplicationListener {
 			        fixDefSquare.restitution= 0.3f;
 			        squareBody.createFixture(fixDefSquare);
 					
-					System.out.print("@");
+					//System.out.print("@");
 					
 				}
 				else{
-					System.out.print("#");
+					//System.out.print("#");
 				}
 				
 			}
-			System.out.println();
+			//System.out.println();
 		}
 		
 		
@@ -209,7 +226,13 @@ public class MarbleGame implements ApplicationListener {
         bodyDef = new BodyDef();  
         //bodyDef.
         bodyDef.type = BodyType.DynamicBody; 
-        bodyDef.position.set(3f ,3f);  
+        if(startPosition==null){
+        	bodyDef.position.set(3f ,3f);  
+        }
+        else{
+        	bodyDef.position.set(startPosition.x ,startPosition.y);  
+        }
+        
         circleBody = world.createBody(bodyDef);  
         
 		
