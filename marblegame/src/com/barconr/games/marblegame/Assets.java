@@ -44,6 +44,7 @@ public class Assets{
 	public static void dispose(){
 		gameAtlas.dispose();
 		mazemap.dispose();
+		
 	}
 
 }

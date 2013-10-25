@@ -68,7 +68,7 @@ public class MarbleGame implements ApplicationListener {
 		camera.update();
 		//camera.
 		marbleSprite = new Sprite(Assets.marble);
-		marbleSprite.setBounds(0, 0, 32, 32);
+		marbleSprite.setBounds(0, 0, 16, 16);
 		
 		tilerender = new OrthogonalTiledMapRenderer(Assets.mazemap);
 		//createBoxShit();
@@ -179,9 +179,10 @@ public class MarbleGame implements ApplicationListener {
 				boolean impassibleBlock = tilelayer.getCell(j, layerHeight-i-1).getTile().getProperties().containsKey("block");
 				if(tilelayer.getCell(j, layerHeight-i-1).getTile().getProperties().containsKey("start")){
 					if(startPosition==null){
+						System.out.println("x:"+ j*tileWidth+ " y:"+i*tileHeight);
+						startPosition = new Vector2(j*tileWidth*Assets.METERS_PER_PIXEL,(50-i)*tileHeight*Assets.METERS_PER_PIXEL);
 						
-						startPosition = new Vector2(j*tileWidth*Assets.METERS_PER_PIXEL,i*tileHeight*Assets.METERS_PER_PIXEL);
-						System.out.println(startPosition);
+						
 					}
 					
 					
@@ -228,8 +229,10 @@ public class MarbleGame implements ApplicationListener {
         bodyDef.type = BodyType.DynamicBody; 
         if(startPosition==null){
         	bodyDef.position.set(3f ,3f);  
+        	System.out.println("Start pos null!");
         }
         else{
+        	System.out.println("Start pos not null : " + startPosition);
         	bodyDef.position.set(startPosition.x ,startPosition.y);  
         }
         
@@ -238,7 +241,7 @@ public class MarbleGame implements ApplicationListener {
 		
 
         dynamicCircle = new CircleShape();  
-        dynamicCircle.setRadius(16/Assets.PIXELS_PER_METER );  
+        dynamicCircle.setRadius(8/Assets.PIXELS_PER_METER );  
         
        //System.out.println(70 / Assets.PIXELS_PER_METER);
         
@@ -258,10 +261,6 @@ public class MarbleGame implements ApplicationListener {
 	
 	
 
-	@Override
-	public void dispose() {
-		Assets.dispose();
-	}
 
 	@Override
 	public void render() {	
@@ -287,9 +286,9 @@ public class MarbleGame implements ApplicationListener {
 		}
 		
 		
-		
+		world.setGravity(getAccel());
 		tilerender.render();
-		debugRenderer.render(world, debugProj);
+		//debugRenderer.render(world, debugProj);
 		//System.out.println(bodyDef.position.x*Assets.PIXELS_PER_METER +""+bodyDef.position.y * Assets.PIXELS_PER_METER);
 		//world.step(BOX_STEP, BOX_VELOCITY_ITERATIONS, BOX_POSITION_ITERATIONS);  
 		
@@ -297,7 +296,7 @@ public class MarbleGame implements ApplicationListener {
 		batcher.begin();
 		Vector2 v2 = circleBody.getWorldCenter();
 		
-		marbleSprite.setPosition((v2.x*Assets.PIXELS_PER_METER)-16, (v2.y*Assets.PIXELS_PER_METER)-16);
+		marbleSprite.setPosition((v2.x*Assets.PIXELS_PER_METER)-8, (v2.y*Assets.PIXELS_PER_METER)-8);
 		marbleSprite.draw(batcher);
 		
 		batcher.end();
@@ -305,6 +304,12 @@ public class MarbleGame implements ApplicationListener {
 		
 		
 	}
+	
+	Vector2 getAccel(){
+		return new Vector2(Gdx.input.getAccelerometerY()*7,Gdx.input.getAccelerometerX()*-7);
+	}
+	
+	
 
 	private void createTestBall(float x, float y) {
 			System.out.println("x: "+x+" y: "+ y+"Uprojected");
@@ -337,6 +342,14 @@ public class MarbleGame implements ApplicationListener {
 		
 	}
 
+	@Override
+	public void dispose() {
+		world.dispose();
+		tilerender.dispose();
+		batcher.dispose();
+		Assets.dispose();
+		
+	}
 
 
 
@@ -346,9 +359,11 @@ public class MarbleGame implements ApplicationListener {
 		camera.viewportHeight = height;
 		camera.update();
 	}
+	
 
 	@Override
 	public void pause() {
+		dispose();
 	}
 
 	@Override
