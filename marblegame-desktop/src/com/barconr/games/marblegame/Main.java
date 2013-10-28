@@ -8,8 +8,8 @@ public class Main {
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 		cfg.title = "marblegame";
 		cfg.useGL20 = true;
-		cfg.width = 400;
-		cfg.height = 240;
+		cfg.width = 800;
+		cfg.height = 480;
 		
 		new LwjglApplication(new MarbleGame(), cfg);
 	}

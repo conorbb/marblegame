@@ -1,4 +1,5 @@
-/gfx
-/tiles
 /com
 /data
+/gfx
+/tiles
+*.class
