@@ -321,6 +321,7 @@ ContactListener clContactListener;
 		else{
 			bodyDef.position.set(startPosition.x ,startPosition.y);  
 		}
+		bodyDef.allowSleep = false;
 
 		circleBody = world.createBody(bodyDef);  
 		circleBody.setUserData("ball");
@@ -355,7 +356,7 @@ ContactListener clContactListener;
 
 
 		tilerender.render();
-		debugRenderer.render(world, debugProj);
+		//debugRenderer.render(world, debugProj);
 
 
 
