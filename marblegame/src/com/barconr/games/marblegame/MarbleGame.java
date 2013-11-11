@@ -59,6 +59,7 @@ public class MarbleGame implements ApplicationListener {
 	static final int BOX_VELOCITY_ITERATIONS=6;  
 	static final int BOX_POSITION_ITERATIONS=2;  
 	Box2DDebugRenderer debugRenderer;
+	Maze3Drenderer maze3Drenderer;
 
 	Vector2 startPosition;
 	Vector2 endPostion;
@@ -82,7 +83,7 @@ public class MarbleGame implements ApplicationListener {
 		Assets.load();
 		create3Dcam();
 		create3DModel();
-
+		maze3Drenderer = new Maze3Drenderer();
 		debugRenderer = new Box2DDebugRenderer();  
 		//Setup Ortho (2d) cam
 		camera = new OrthographicCamera(Assets.VIRTUAL_SCREEN_WIDTH,Assets.VIRTUAL_SCREEN_HEIGHT);
@@ -94,9 +95,9 @@ public class MarbleGame implements ApplicationListener {
 		marbleSprite.setBounds(0, 0, 16, 16);
 
 		tilerender = new OrthogonalTiledMapRenderer(Assets.mazemap);
-
+		maze3Drenderer.createModels(Assets.mazemap);
 		createFixtures(Assets.mazemap);
-
+		
 		debugProj = new Matrix4(camera.combined);
 		debugProj.scale(Assets.PIXELS_PER_METER, Assets.PIXELS_PER_METER, 1);
 		batcher = new SpriteBatch();
@@ -108,6 +109,7 @@ public class MarbleGame implements ApplicationListener {
 
 		debugRenderer = new Box2DDebugRenderer();
 
+		
 
 
 	}
@@ -141,67 +143,6 @@ public class MarbleGame implements ApplicationListener {
 		modelBatch.end();
 	}
 
-
-
-
-	/*public void createBoxShit(){
-		world = new World(new Vector2(0, -9), true); 
-
-		//world.
-        BodyDef groundBodyDef =new BodyDef();  
-        groundBodyDef.position.set(new Vector2(5, 1f));  
-        Body groundBody = world.createBody(groundBodyDef);  
-        groundBodyDef.type = BodyType.StaticBody;
-        PolygonShape groundBox = new PolygonShape();  
-        //groundBox.setAsBox(20, 0.3f);  
-        groundBox.setAsBox(5f, 0.3f);
-        groundBody.createFixture(groundBox, 0.0f);  
-
-
-
-
-        bodyDef = new BodyDef();  
-
-        //bodyDef.
-        bodyDef.type = BodyType.DynamicBody; 
-        bodyDef.position.set(3f ,3f);  
-        circleBody = world.createBody(bodyDef);  
-
-
-        CircleShape dynamicCircle = new CircleShape();  
-        dynamicCircle.setRadius(70 / Assets.PIXELS_PER_METER);  
-        System.out.println("Radius" + 70 / Assets.PIXELS_PER_METER);
-       //System.out.println(70 / Assets.PIXELS_PER_METER);
-
-        FixtureDef fixtureDef = new FixtureDef();  
-        fixtureDef.shape = dynamicCircle;  
-        fixtureDef.density = 0.1f;  
-        fixtureDef.friction = 1f;  
-
-        fixtureDef.restitution = 0.5f; 
-
-        //fixtureDef.
-        circleBody.createFixture(fixtureDef);  
-
-
-        PolygonShape squareShape = new PolygonShape();
-        BodyDef squareBodyDef = new BodyDef();
-        squareBodyDef.position.sub(1* Assets.METERS_PER_PIXEL, 1* Assets.METERS_PER_PIXEL);
-
-        squareShape.setAsBox(50 * Assets.METERS_PER_PIXEL, 50 * Assets.METERS_PER_PIXEL);
-        FixtureDef fixDefSquare = new FixtureDef();
-        fixDefSquare.shape = squareShape;
-        fixDefSquare.density = 0.1f;
-        fixDefSquare.restitution= 0.3f;
-        Body squareBody = world.createBody(squareBodyDef);
-        squareBody.createFixture(fixDefSquare);
-
-ContactListener clContactListener;
-//clContactListener.
-
-
-
-	}*/
 
 
 
@@ -355,9 +296,10 @@ ContactListener clContactListener;
 		world.setGravity(getAccel());
 
 
-		tilerender.render();
+		//tilerender.render();
 		//debugRenderer.render(world, debugProj);
 
+		maze3Drenderer.render();
 
 
 		batcher.begin();
