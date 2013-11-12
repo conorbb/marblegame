@@ -73,16 +73,16 @@ public class MarbleGame implements ApplicationListener {
 	private TiledMap map;
 
 	//3D shite
-	public PerspectiveCamera cam3D;
-	public Model model;
-	public ModelInstance instance;
-	public ModelBatch modelBatch;
+//	public PerspectiveCamera cam3D;
+//	public Model model;
+//	public ModelInstance instance;
+//	public ModelBatch modelBatch;
 
 	@Override
 	public void create() {
 		Assets.load();
-		create3Dcam();
-		create3DModel();
+//		create3Dcam();
+//		create3DModel();
 		maze3Drenderer = new Maze3Drenderer();
 		debugRenderer = new Box2DDebugRenderer();  
 		//Setup Ortho (2d) cam
@@ -114,36 +114,36 @@ public class MarbleGame implements ApplicationListener {
 
 	}
 
-	public void create3Dcam(){
-
-		cam3D = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		cam3D.position.set(10f, 10f, 10f);
-		cam3D.lookAt(0,0,0);
-		cam3D.near = 0.1f;
-		cam3D.far = 300f;
-		cam3D.update();
-
-	}
-
-	public void create3DModel(){
-		ModelBuilder modelBuilder = new ModelBuilder();
-		model = modelBuilder.createBox(5f, 5f, 5f, 
-				new Material(ColorAttribute.createDiffuse(Color.GREEN)),
-				Usage.Position | Usage.Normal);
-		instance = new ModelInstance(model);
-		modelBatch = new ModelBatch();
-	}
-
-	public void renderBox(){
-		Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		//Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
-
-		modelBatch.begin(cam3D);
-		modelBatch.render(instance);
-		modelBatch.end();
-	}
-
-
+//	public void create3Dcam(){
+//
+//		cam3D = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+//		cam3D.position.set(10f, 10f, 10f);
+//		cam3D.lookAt(0,0,0);
+//		cam3D.near = 0.1f;
+//		cam3D.far = 300f;
+//		cam3D.update();
+//
+//	}
+//
+//	public void create3DModel(){
+//		ModelBuilder modelBuilder = new ModelBuilder();
+//		model = modelBuilder.createBox(5f, 5f, 5f, 
+//				new Material(ColorAttribute.createDiffuse(Color.GREEN)),
+//				Usage.Position | Usage.Normal);
+//		instance = new ModelInstance(model);
+//		modelBatch = new ModelBatch();
+//	}
+//
+//	public void renderBox(){
+//		Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+//		//Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
+//
+//		modelBatch.begin(cam3D);
+//		modelBatch.render(instance);
+//		modelBatch.end();
+//	}
+//
+//
 
 
 	private void createFixtures(TiledMap tiledmap){
@@ -309,7 +309,12 @@ public class MarbleGame implements ApplicationListener {
 		marbleSprite.draw(batcher);
 
 		batcher.end();
-		world.step(BOX_STEP, BOX_VELOCITY_ITERATIONS, BOX_POSITION_ITERATIONS);
+		world.step(f, BOX_VELOCITY_ITERATIONS, BOX_POSITION_ITERATIONS);
+		//world.step(BOX_STEP, BOX_VELOCITY_ITERATIONS, BOX_POSITION_ITERATIONS);
+		
+		if(Gdx.input.justTouched()){
+			maze3Drenderer.moveCamera();
+		}
 
 
 	}

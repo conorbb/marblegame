@@ -37,32 +37,21 @@ public class Maze3Drenderer {
         instances = new ArrayList<ModelInstance>();
         
         cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        cam.position.set(200f, 200f, 400f);
-        cam.lookAt(200,200,0);
+        cam.position.set((float) Gdx.graphics.getWidth()/2, (float)Gdx.graphics.getHeight()/2, 400f);
+        cam.lookAt(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2,0);
+        
+        
+//        cam.position.set(400f, 260f, 400f);
+//        cam.lookAt(400,260,0);
         cam.near = 0.1f;
-        cam.far = 900f;
+        cam.far = 500f;
+        
         cam.update();
         
         environment = new Environment();
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
         environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
         
-		ModelBuilder modelBuilder = new ModelBuilder();
-		model = modelBuilder.createBox(32f, 32f, 32f, 
-		    new Material(ColorAttribute.createDiffuse(Color.GREEN)),
-		    Usage.Position | Usage.Normal);
-		ModelInstance mis = new ModelInstance(model);
-		mis.transform.setTranslation(new Vector3(0, 32, 0));
-		instances.add(mis);
-		
-		
-		model = modelBuilder.createBox(32f, 32f, 32f, 
-			    new Material(ColorAttribute.createDiffuse(Color.LIGHT_GRAY)),
-			    Usage.Position | Usage.Normal);
-		
-		//model.
-		
-		instances.add(new ModelInstance(model));
     }
     
 	 void createModels(TiledMap tiledmap){
@@ -109,6 +98,10 @@ public class Maze3Drenderer {
 		instances.add(mis);
 	}
     
+	public void moveCamera(){
+		cam.rotate(new Vector3(0, 0, 0), 100);
+		cam.update();
+	}
     
 
     public  void render(){
