@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="50" height="50" tilewidth="16" tileheight="16">
+ <tileset firstgid="1" name="TileA2" tilewidth="16" tileheight="16">
+  <image source="TileA2.png" width="512" height="384"/>
+  <terraintypes>
+   <terrain name="New Terrain" tile="-1"/>
+  </terraintypes>
+  <tile id="284">
+   <properties>
+    <property name="passable" value=""/>
+   </properties>
+  </tile>
+  <tile id="285">
+   <properties>
+    <property name="passable" value=""/>
+   </properties>
+  </tile>
+  <tile id="286">
+   <properties>
+    <property name="passable" value=""/>
+   </properties>
+  </tile>
+  <tile id="287">
+   <properties>
+    <property name="passable" value=""/>
+   </properties>
+  </tile>
+  <tile id="305">
+   <properties>
+    <property name="grass" value="true"/>
+   </properties>
+  </tile>
+  <tile id="316">
+   <properties>
+    <property name="passable" value=""/>
+   </properties>
+  </tile>
+  <tile id="317">
+   <properties>
+    <property name="passable" value=""/>
+   </properties>
+  </tile>
+  <tile id="318">
+   <properties>
+    <property name="passable" value=""/>
+   </properties>
+  </tile>
+  <tile id="319">
+   <properties>
+    <property name="passable" value=""/>
+   </properties>
+  </tile>
+  <tile id="338">
+   <properties>
+    <property name="grass" value="true"/>
+   </properties>
+  </tile>
+  <tile id="348">
+   <properties>
+    <property name="passable" value=""/>
+   </properties>
+  </tile>
+  <tile id="349">
+   <properties>
+    <property name="passable" value=""/>
+   </properties>
+  </tile>
+  <tile id="350">
+   <properties>
+    <property name="passable" value=""/>
+   </properties>
+  </tile>
+  <tile id="351">
+   <properties>
+    <property name="passable" value=""/>
+   </properties>
+  </tile>
+  <tile id="473">
+   <properties>
+    <property name="end" value=""/>
+   </properties>
+  </tile>
+  <tile id="476">
+   <properties>
+    <property name="block" value=""/>
+   </properties>
+  </tile>
+  <tile id="477">
+   <properties>
+    <property name="block" value="true"/>
+   </properties>
+  </tile>
+  <tile id="478">
+   <properties>
+    <property name="block" value="true"/>
+   </properties>
+  </tile>
+  <tile id="479">
+   <properties>
+    <property name="block" value="true"/>
+   </properties>
+  </tile>
+  <tile id="505">
+   <properties>
+    <property name="start" value=""/>
+   </properties>
+  </tile>
+  <tile id="508">
+   <properties>
+    <property name="block" value="true"/>
+   </properties>
+  </tile>
+  <tile id="509">
+   <properties>
+    <property name="block" value="true"/>
+   </properties>
+  </tile>
+  <tile id="510">
+   <properties>
+    <property name="block" value="true"/>
+   </properties>
+  </tile>
+  <tile id="511">
+   <properties>
+    <property name="block" value="true"/>
+   </properties>
+  </tile>
+  <tile id="540">
+   <properties>
+    <property name="block" value="true"/>
+   </properties>
+  </tile>
+  <tile id="541">
+   <properties>
+    <property name="block" value="true"/>
+   </properties>
+  </tile>
+  <tile id="542">
+   <properties>
+    <property name="block" value="true"/>
+   </properties>
+  </tile>
+  <tile id="543">
+   <properties>
+    <property name="block" value="true"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="Tile Layer 1" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJzt1UEOgyAQhWF7MW/CxbvgIDWRtgs3kxEwJvKG/IsvKLiYlxliei1LAgAAAAAAAADgAe+L3xezRlRMDpulnOxH08qhkm+mfsxwP6AlO46z3XGc2VkcPZOtHKnyrsTLsXbkiNCPnhxqWjmi3A9oySfrX8S5ys5eLYdahp7/oH32alfIMks/vLWVQ/V+9Pj8bAJ13LEao+r4AkT63ok=
+  </data>
+ </layer>
+</map>
