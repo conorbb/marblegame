@@ -28,7 +28,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 public class Maze3Drenderer {
     public PerspectiveCamera cam;
     public ModelBatch modelBatch;
-    public Model model;
+    
     public ModelInstance instance;
     public ArrayList<ModelInstance> instances;
 	private Environment environment;
@@ -52,9 +52,11 @@ public class Maze3Drenderer {
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
         environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
         
+        createModels(Assets.mazemap);
+        
     }
     
-	 void createModels(TiledMap tiledmap){
+	 private void createModels(TiledMap tiledmap){
 		int layerHeight =0 , layerWidth=0;
 		float tileWidth=0 ,tileHeight=0 ;
 
@@ -90,18 +92,23 @@ public class Maze3Drenderer {
 	
 	private void addSquare(Vector3 position){
 		ModelBuilder modelBuilder = new ModelBuilder();
-		model = modelBuilder.createBox(16f, 16f, 16f, 
+		Model model = modelBuilder.createBox(16f, 16f, 16f, 
 		    new Material(ColorAttribute.createDiffuse(Color.GREEN)),
 		    Usage.Position | Usage.Normal);
 		ModelInstance mis = new ModelInstance(model);
 		mis.transform.setTranslation(position);
 		instances.add(mis);
 	}
-    
-	public void moveCamera(){
-		cam.rotate(new Vector3(0, 0, 0), 100);
-		cam.update();
+	
+	private void doTestRender(){
+		addSquare(new Vector3(0,0,0));
+		addSquare(new Vector3(0,16,0));
+		addSquare(new Vector3(0,32,0));
+		addSquare(new Vector3(0,48,0));
 	}
+	
+    
+
     
 
     public  void render(){
@@ -115,6 +122,11 @@ public class Maze3Drenderer {
         
         modelBatch.end();
     }
+    
+	public void moveCamera(){
+		cam.rotate(new Vector3(0, 0, 0), 100);
+		cam.update();
+	}
 
 
 }

@@ -11,6 +11,6 @@ public class Main {
 		cfg.width = 800;
 		cfg.height = 480;
 		
-		new LwjglApplication(new MarbleGame(), cfg);
+		new LwjglApplication(new MarbleGameApp(), cfg);
 	}
 }
