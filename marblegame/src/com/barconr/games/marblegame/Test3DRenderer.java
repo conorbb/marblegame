@@ -17,78 +17,42 @@ import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
-public class Maze3Drenderer {
+import com.badlogic.gdx.math.Vector3;
+
+public class Test3DRenderer {
     public PerspectiveCamera cam;
     public ModelBatch modelBatch;
     
     public ModelInstance instance;
     public ArrayList<ModelInstance> instances;
 	private Environment environment;
-    public Maze3Drenderer(){
+    public Test3DRenderer(){
         modelBatch = new ModelBatch();
         instances = new ArrayList<ModelInstance>();
         
         cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        cam.position.set((float) Gdx.graphics.getWidth()/2, (float)Gdx.graphics.getHeight()/2, 150f);
-        cam.lookAt(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2,0);
+        cam.position.set(0, 0, 400f);
+        cam.lookAt(0, 0,0);
         
         
-//        cam.position.set(400f, 260f, 400f);
-//        cam.lookAt(400,260,0);
+
         cam.near = 0.1f;
-        cam.far = 100f;
+        cam.far = 500f;
         
         cam.update();
         
+        //Lighting
         environment = new Environment();
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
         environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
         
-        createModels(Assets.mazemap);
+ 
+        doTestRender();
         
     }
     
-	 private void createModels(TiledMap tiledmap){
-		int layerHeight =0 , layerWidth=0;
-		float tileWidth=0 ,tileHeight=0 ;
 
-		// Load the Tiled map layer and store some relevant variables
-		TiledMapTileLayer tilelayer = (TiledMapTileLayer)(tiledmap.getLayers().get(0));
-		layerHeight = tilelayer.getHeight();
-		layerWidth = tilelayer.getWidth();
-		tileHeight = tilelayer.getTileHeight();
-		tileWidth = tilelayer.getTileWidth();
-		
-		
-		for(int y_pos=0;y_pos<layerHeight;y_pos++){
-
-			for(int x_pos=0;x_pos<layerWidth;x_pos++){
-
-				//boolean impassibleBlock = tilelayer.getCell(x_pos, layerHeight-y_pos-1).getTile().getProperties().containsKey("block");
-				boolean impassibleBlock = tilelayer.getCell(x_pos, y_pos).getTile().getProperties().containsKey("block");
-				if(impassibleBlock){
-					//Draw a cube here
-					float xcord = x_pos * tileWidth;
-					float ycord = y_pos * tileHeight;
-					
-					addSquare(new Vector3(xcord,ycord,0));
-				}
-
-				
-			}
-			
-		}
-		
-		
-	}
 	
 	private void addSquare(Vector3 position){
 		ModelBuilder modelBuilder = new ModelBuilder();
@@ -101,10 +65,10 @@ public class Maze3Drenderer {
 	}
 	
 	private void doTestRender(){
-		addSquare(new Vector3(0,0,50));
-		addSquare(new Vector3(0,16,50));
-		addSquare(new Vector3(0,32,50));
-		addSquare(new Vector3(0,48,50));
+		addSquare(new Vector3(-50,0,0));
+		addSquare(new Vector3(-50,16,0));
+		addSquare(new Vector3(-50,32,0));
+		addSquare(new Vector3(-50,48,0));
 	}
 	
     
@@ -115,20 +79,15 @@ public class Maze3Drenderer {
         Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 
-        Gdx.gl20.glEnable(Gdx.gl20.GL_POLYGON_OFFSET_FILL);
-        Gdx.gl20.glPolygonOffset(0.1f,0.1f);
         modelBatch.begin(cam);
-        for(ModelInstance mi : instances){
+        
+        for(ModelInstance mi : instances)
         	modelBatch.render(mi,environment);
-        }
         
         modelBatch.end();
     }
     
-	public void moveCamera(){
-		cam.rotate(new Vector3(0, 0, 0), 100);
-		cam.update();
-	}
+
 
 
 }

@@ -36,8 +36,8 @@ public class Assets{
 	public static void load(){
 		gameAtlas = new TextureAtlas(Gdx.files.internal("gfx/marble.pack"));
 		marble = new TextureRegion(gameAtlas.findRegion("marb"));
-//		mazemap = new TmxMapLoader().load("tiles/mg.tmx");
-		mazemap = new TmxMapLoader().load("tiles/test pattern.tmx");
+		mazemap = new TmxMapLoader().load("tiles/mg.tmx");
+//		mazemap = new TmxMapLoader().load("tiles/test pattern.tmx");
 		//new TmxMapLoader().lo
 		
 	}

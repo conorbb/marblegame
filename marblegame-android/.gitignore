@@ -1,0 +1,6 @@
+bin/
+gin/
+*.class
+*.dex
+.project
+.classpath
