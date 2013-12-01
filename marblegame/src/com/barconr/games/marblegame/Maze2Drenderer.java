@@ -9,13 +9,15 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 
 public class Maze2Drenderer {
 	private OrthographicCamera camera;
 	private SpriteBatch batcher;
 
-
-
+	Box2DDebugRenderer renderer;
+	
+	Vector2 ballLoc;
 
 	Sprite marbleSprite;
 	Vector2 startPosition;
@@ -32,7 +34,8 @@ public class Maze2Drenderer {
 
 	public Maze2Drenderer(TiledMap tm, Physics2D physics) {
 		this.physics = physics;
-
+		renderer = new Box2DDebugRenderer();
+		ballLoc = new Vector2();
 		map = tm;
 
 		camera = new OrthographicCamera(Assets.VIRTUAL_SCREEN_WIDTH,Assets.VIRTUAL_SCREEN_HEIGHT);
@@ -72,16 +75,17 @@ public class Maze2Drenderer {
 
 
 		tilerender.render();
-
+		
 
 		batcher.begin();
-		Vector2 v2 = physics.getPlayerBallLoc();
+		ballLoc.set(physics.getPlayerBallLoc());
 
-		marbleSprite.setPosition((v2.x*Assets.PIXELS_PER_METER)-8, (v2.y*Assets.PIXELS_PER_METER)-8);
+		marbleSprite.setPosition((ballLoc.x*Assets.PIXELS_PER_METER)-8, (ballLoc.y*Assets.PIXELS_PER_METER)-8);
 		marbleSprite.draw(batcher);
 
 		batcher.end();
 
+		renderer.render(physics.getWorld(), debugProj);
 
 
 

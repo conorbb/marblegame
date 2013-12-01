@@ -1,5 +1,7 @@
 package com.barconr.games.marblegame;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Peripheral;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
@@ -7,7 +9,12 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -20,22 +27,32 @@ public class Physics2D {
 	private Body ballCircleBody;
 	private Vector2 startPosition;	
 	
+	private BallContactListener ballsListener;
 	static final float BOX_STEP=1/60f;  
 	static final int BOX_VELOCITY_ITERATIONS=6;  
 	static final int BOX_POSITION_ITERATIONS=2;  
 	Box2DDebugRenderer debugRenderer;
 
+	
 
 	
 
 	
 	public void simulate(){
+		
+		if(Gdx.input.isPeripheralAvailable(Peripheral.Accelerometer)){
+			world.setGravity(getAccel());
+		}
+			
+		
 		world.step(BOX_STEP, BOX_VELOCITY_ITERATIONS, BOX_POSITION_ITERATIONS);
 	}
 	
 	public void createFixtures(TiledMap tiledmap){
 		int layerHeight =0 , layerWidth=0;
 		float tileWidth=0 ,tileHeight=0 ;
+		
+		ballsListener = new BallContactListener();
 
 		// Load the Tiled map layer and store some relevant variables
 		TiledMapTileLayer tilelayer = (TiledMapTileLayer)(tiledmap.getLayers().get(0));
@@ -53,6 +70,7 @@ public class Physics2D {
 
 		//Create the box2d world
 		world = new World(new Vector2(0, -9), true); 
+		world.setContactListener(ballsListener);
 
 
 
@@ -83,7 +101,9 @@ public class Physics2D {
 					PolygonShape squareShape = new PolygonShape();
 
 
+					
 					BodyDef squareBodyDef = new BodyDef();
+					
 					squareBodyDef.type = BodyType.StaticBody;	//Static body which won't move
 					//Box position
 					squareBodyDef.position.set( new Vector2((x_pos* Assets.METERS_PER_PIXEL*tileWidth), (layerHeight-y_pos-1)* Assets.METERS_PER_PIXEL*tileHeight));
@@ -91,19 +111,23 @@ public class Physics2D {
 					squareBodyDef.position.add(tileWidth/2*Assets.METERS_PER_PIXEL, tileHeight/2*Assets.METERS_PER_PIXEL);	
 
 					Body squareBody = world.createBody(squareBodyDef);
-					squareBody.setUserData("exit");
+					//world.
+					//squareBody.setUserData("exit");
 					//Size of box
 					squareShape.setAsBox(tileWidth/2 * Assets.METERS_PER_PIXEL, tileHeight/2 * Assets.METERS_PER_PIXEL);
 					FixtureDef fixDefSquare = new FixtureDef();
-
+					
 					fixDefSquare.shape = squareShape;
 					fixDefSquare.isSensor = true;
+					
 					fixDefSquare.density = 0.1f;
 					fixDefSquare.restitution= 0.3f;
+					
 
 
-					squareBody.createFixture(fixDefSquare);
-
+					Fixture endFix = squareBody.createFixture(fixDefSquare);
+					endFix.setSensor(true);
+					endFix.setUserData("exit");
 				}
 
 				if(impassibleBlock){
@@ -150,9 +174,9 @@ public class Physics2D {
 			playerBallBodyDef.position.set(startPosition.x ,startPosition.y);  
 		}
 		playerBallBodyDef.allowSleep = false;
-
+		
 		ballCircleBody = world.createBody(playerBallBodyDef);  
-		ballCircleBody.setUserData("ball");
+		
 		dynamicCircle = new CircleShape();  
 		dynamicCircle.setRadius(8/Assets.PIXELS_PER_METER );  
 
@@ -161,15 +185,80 @@ public class Physics2D {
 		ballFixtureDef.shape = dynamicCircle;  
 		ballFixtureDef.density = 0.1f;  
 		ballFixtureDef.friction = 1f;  
+		//ballFixtureDef.
 
 		ballFixtureDef.restitution = 0.5f; 
-		ballCircleBody.createFixture(ballFixtureDef);  
+		//ballCircleBody.setUserData("ball");
+		Fixture fx = ballCircleBody.createFixture(ballFixtureDef);  
+		fx.setUserData("ball");
 
-
+		
 
 }
 	public Vector2 getPlayerBallLoc(){
+		
 		return ballCircleBody.getWorldCenter();
+	}
+	
+	private Vector2 getAccel(){
+		return new Vector2(Gdx.input.getAccelerometerY()*7,Gdx.input.getAccelerometerX()*-7);
+	}
+	
+	
+	public World getWorld(){
+		return world;
+	}
+	
+	
+	
+	class BallContactListener implements ContactListener {
+
+		@Override
+		public void beginContact(Contact contact) {
+			
+				if(contact.getFixtureA()!=null&&contact.getFixtureB()!=null){
+					
+					if(contact.getFixtureA().getUserData()!=null&&contact.getFixtureB().getUserData()!=null){
+						
+						if(((String)contact.getFixtureA().getUserData()).equals("ball")&&((String)contact.getFixtureB().getUserData()).equals("exit")){
+							System.out.println("&&&& WIN &&&");
+						}
+						else if (((String)contact.getFixtureA().getUserData()).equals("exit")&&((String)contact.getFixtureB().getUserData()).equals("ball")){
+							System.out.println("&&&& WIN &&&");
+						}
+//						
+//						if(((String)contact.getFixtureA().getUserData()).equals("exit")){
+//							System.out.println("!!END IS INVOLVED!!! B is:" + ((String)contact.getFixtureB().getUserData()));
+//						}
+//						else if (((String)contact.getFixtureB().getUserData()).equals("exit")){
+//							System.out.println("!!END IS INVOLVED!!! A is:" + ((String)contact.getFixtureA().getUserData()));
+//						}
+					
+					}
+					
+				}
+
+			
+		}
+
+		@Override
+		public void endContact(Contact contact) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void preSolve(Contact contact, Manifold oldManifold) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void postSolve(Contact contact, ContactImpulse impulse) {
+			// TODO Auto-generated method stub
+			
+		}
+		
 	}
 
 }

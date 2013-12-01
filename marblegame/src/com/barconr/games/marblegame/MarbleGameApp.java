@@ -52,8 +52,8 @@ public class MarbleGameApp implements ApplicationListener {
 	Maze3Drenderer renderer3D;
 	Maze2Drenderer renderer2D;
 	Physics2D physics;
-	private boolean render2D =false;
-
+	private boolean render2D =true;
+	Vector2 worldAccl;
 	
 
 	@Override
@@ -61,10 +61,15 @@ public class MarbleGameApp implements ApplicationListener {
 		Assets.load();
 		physics = new Physics2D();
 		physics.createFixtures(Assets.mazemap);
-		renderer2D = new Maze2Drenderer(Assets.mazemap,physics);
-		renderer3D = new Maze3Drenderer();
-	
+		if(render2D){
+			renderer2D = new Maze2Drenderer(Assets.mazemap,physics);
+		}
+		else{
+			renderer3D = new Maze3Drenderer();
+		}
 		
+		worldAccl = new Vector2();
+		System.out.println("Test!!!!!!!!!!!");
 
 	}
 
@@ -74,6 +79,7 @@ public class MarbleGameApp implements ApplicationListener {
 	@Override
 	public void render() {	
 
+		
 		if(render2D){
 			physics.simulate();
 			renderer2D.render();
@@ -86,9 +92,7 @@ public class MarbleGameApp implements ApplicationListener {
 		
 	}
 
-	Vector2 getAccel(){
-		return new Vector2(Gdx.input.getAccelerometerY()*7,Gdx.input.getAccelerometerX()*-7);
-	}
+
 
 
 

@@ -32,40 +32,80 @@ public class Maze3Drenderer {
     public ModelInstance instance;
     public ArrayList<ModelInstance> instances;
 	private Environment environment;
+	private ModelBuilder modelBuilder;
+//	private Mazebuilder mazeBuilder;
+	
+	
+	int layerHeight =0 , layerWidth=0;
+	float tileWidth=0 ,tileHeight=0 ;
+	
+	private static final float CUBE_SIZE = 8;
     public Maze3Drenderer(){
         modelBatch = new ModelBatch();
         instances = new ArrayList<ModelInstance>();
+        modelBuilder = new ModelBuilder();
+//        mazeBuilder = new Mazebuilder();
+        createModels(Assets.mazemap);
         
         cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        cam.position.set((float) Gdx.graphics.getWidth()/2, (float)Gdx.graphics.getHeight()/2, 150f);
-        cam.lookAt(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2,0);
+        float mapPixelWidth = layerWidth * CUBE_SIZE;
+        float mapPixelHeight = layerHeight * CUBE_SIZE;
         
+        Vector3 midPoint = new Vector3(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2,0);
+        Vector3 leftPoint = new Vector3(0, Gdx.graphics.getHeight()/2,0);
         
-//        cam.position.set(400f, 260f, 400f);
-//        cam.lookAt(400,260,0);
-        cam.near = 0.1f;
-        cam.far = 100f;
+        cam.position.set((float) mapPixelWidth/2, (float)mapPixelHeight/2, 200f);
+        cam.lookAt((float) mapPixelWidth/2, (float)mapPixelHeight/2,0);
+        
+//        cam.position.set((float) Gdx.graphics.getWidth()/2, (float)Gdx.graphics.getHeight()/2, 250f);
+//        cam.lookAt((float)Gdx.graphics.getWidth()/2, (float)Gdx.graphics.getHeight()/2,0);
+        
+
+        
+//    cam.position.set(0, 0, 150);
+//       cam.lookAt(0,0,0);
+        cam.near = 90.1f;
+        cam.far = 220f;
         
         cam.update();
+//        cam.project(midPoint);
+//        cam.project(leftPoint);
+//        
+////        float xtrans = midPoint.x - ((float)mapPixelWidth/2) - leftPoint.x;
+//        float xtrans = leftPoint.x - midPoint.x;
+//        System.out.println("Mid Point " + midPoint);
+//        System.out.println("left Point" + leftPoint);
+//        System.out.println("xtrans " + xtrans);
+//        System.out.println("mapPixelWidth" + mapPixelWidth);
+//        cam.position.set(cam.position.x-180, cam.position.y, 450);
+//        
+//        //cam.position.set((float) mapPixelWidth - midPoint.x,(float)mapPixelHeight - midPoint.y, 250f);
+//        cam.lookAt(cam.position.x,cam.position.y,0);
+//        cam.update();
+//        
+//        
+//        
         
+        System.out.println("[][][][] "+midPoint);
         environment = new Environment();
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
         environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
         
-        createModels(Assets.mazemap);
+        
         
     }
     
 	 private void createModels(TiledMap tiledmap){
-		int layerHeight =0 , layerWidth=0;
-		float tileWidth=0 ,tileHeight=0 ;
 
+		 
 		// Load the Tiled map layer and store some relevant variables
 		TiledMapTileLayer tilelayer = (TiledMapTileLayer)(tiledmap.getLayers().get(0));
 		layerHeight = tilelayer.getHeight();
 		layerWidth = tilelayer.getWidth();
-		tileHeight = tilelayer.getTileHeight();
-		tileWidth = tilelayer.getTileWidth();
+//		tileHeight = tilelayer.getTileHeight();
+//		tileWidth = tilelayer.getTileWidth();
+		
+		tileWidth= tileHeight = CUBE_SIZE;
 		
 		
 		for(int y_pos=0;y_pos<layerHeight;y_pos++){
@@ -79,32 +119,49 @@ public class Maze3Drenderer {
 					float xcord = x_pos * tileWidth;
 					float ycord = y_pos * tileHeight;
 					
-					addSquare(new Vector3(xcord,ycord,0));
+					addBox(new Vector3(xcord,ycord,0));
+//					mazeBuilder.createMazePart(xcord,ycord,0);
 				}
 
 				
 			}
 			
 		}
+		addBox(new Vector3((layerWidth*tileWidth)/2,(layerHeight*tileHeight)/2,-CUBE_SIZE), layerWidth*tileWidth, layerHeight*tileHeight, CUBE_SIZE,Color.GRAY);
+		
+		
 		
 		
 	}
 	
-	private void addSquare(Vector3 position){
-		ModelBuilder modelBuilder = new ModelBuilder();
-		Model model = modelBuilder.createBox(16f, 16f, 16f, 
-		    new Material(ColorAttribute.createDiffuse(Color.GREEN)),
-		    Usage.Position | Usage.Normal);
-		ModelInstance mis = new ModelInstance(model);
-		mis.transform.setTranslation(position);
-		instances.add(mis);
+	private void addBox(Vector3 position){
+		addBox(position, CUBE_SIZE, CUBE_SIZE, CUBE_SIZE,Color.GREEN);
+
 	}
 	
+	private void addBox(Vector3 position,float width,float height , float depth,Color col){
+		Model model = modelBuilder.createBox(width, height, depth, 
+			    new Material(ColorAttribute.createDiffuse(col)),
+			    Usage.Position | Usage.Normal);
+			ModelInstance mis = new ModelInstance(model);
+			mis.transform.setTranslation(position);
+			instances.add(mis);
+	}
+	
+//	private void addBoxViaMeshBuilder(Vector3 position,float width,float height , float depth,Color col){
+//		mazeBuilder.createMazePart(width, height, depth);
+//		
+//	}
+//	
+//	private void finishMazeBuild(){
+//		instances.add(new ModelInstance(mazeBuilder.finishModel()));
+//	}
+//	
 	private void doTestRender(){
-		addSquare(new Vector3(0,0,50));
-		addSquare(new Vector3(0,16,50));
-		addSquare(new Vector3(0,32,50));
-		addSquare(new Vector3(0,48,50));
+		addBox(new Vector3(0,0,50));
+		addBox(new Vector3(0,16,50));
+		addBox(new Vector3(0,32,50));
+		addBox(new Vector3(0,48,50));
 	}
 	
     
@@ -117,12 +174,12 @@ public class Maze3Drenderer {
 
         Gdx.gl20.glEnable(Gdx.gl20.GL_POLYGON_OFFSET_FILL);
         Gdx.gl20.glPolygonOffset(0.1f,0.1f);
-        modelBatch.begin(cam);
-        for(ModelInstance mi : instances){
-        	modelBatch.render(mi,environment);
-        }
+//        modelBatch.begin(cam);
+//        for(ModelInstance mi : instances){
+        	modelBatch.render(instances,environment);
+//        }
         
-        modelBatch.end();
+//        modelBatch.end();
     }
     
 	public void moveCamera(){
