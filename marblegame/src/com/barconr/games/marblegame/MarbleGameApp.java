@@ -86,7 +86,7 @@ public class MarbleGameApp implements ApplicationListener {
 			
 		}
 		else{
-			physics.simulate();
+			//physics.simulate();
 			renderer3D.render();
 		}
 		

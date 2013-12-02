@@ -3,6 +3,7 @@ package com.barconr.games.marblegame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -24,15 +25,17 @@ public class Maze2Drenderer {
 	Vector2 endPostion;
 
 	boolean ballVisble=true;
+	boolean wonGame = false;
 
 	OrthogonalTiledMapRenderer tilerender; 
-
+	BitmapFont font;
 	Matrix4 debugProj;
 	Physics2D physics;
 	private TiledMap map;
 
 
 	public Maze2Drenderer(TiledMap tm, Physics2D physics) {
+		font = new BitmapFont();
 		this.physics = physics;
 		renderer = new Box2DDebugRenderer();
 		ballLoc = new Vector2();
@@ -72,21 +75,25 @@ public class Maze2Drenderer {
 		
 		Gdx.gl.glClearColor(0,0, 0, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-
+		
 
 		tilerender.render();
 		
 
 		batcher.begin();
+		
 		ballLoc.set(physics.getPlayerBallLoc());
 
 		marbleSprite.setPosition((ballLoc.x*Assets.PIXELS_PER_METER)-8, (ballLoc.y*Assets.PIXELS_PER_METER)-8);
 		marbleSprite.draw(batcher);
-
+		if(physics.getWon()){
+			font.draw(batcher, "Winner!", ballLoc.x*Assets.PIXELS_PER_METER, ballLoc.y*Assets.PIXELS_PER_METER);
+		}
+		
 		batcher.end();
-
-		renderer.render(physics.getWorld(), debugProj);
-
+		
+		//renderer.render(physics.getWorld(), debugProj);
+		
 
 
 	}

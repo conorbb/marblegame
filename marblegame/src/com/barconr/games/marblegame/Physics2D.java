@@ -33,7 +33,7 @@ public class Physics2D {
 	static final int BOX_POSITION_ITERATIONS=2;  
 	Box2DDebugRenderer debugRenderer;
 
-	
+	boolean gameWon = false;
 
 	
 
@@ -209,6 +209,9 @@ public class Physics2D {
 		return world;
 	}
 	
+	boolean getWon(){
+		return gameWon;
+	}
 	
 	
 	class BallContactListener implements ContactListener {
@@ -221,18 +224,12 @@ public class Physics2D {
 					if(contact.getFixtureA().getUserData()!=null&&contact.getFixtureB().getUserData()!=null){
 						
 						if(((String)contact.getFixtureA().getUserData()).equals("ball")&&((String)contact.getFixtureB().getUserData()).equals("exit")){
-							System.out.println("&&&& WIN &&&");
+							gameWon = true;
 						}
 						else if (((String)contact.getFixtureA().getUserData()).equals("exit")&&((String)contact.getFixtureB().getUserData()).equals("ball")){
-							System.out.println("&&&& WIN &&&");
+							gameWon = true;
 						}
-//						
-//						if(((String)contact.getFixtureA().getUserData()).equals("exit")){
-//							System.out.println("!!END IS INVOLVED!!! B is:" + ((String)contact.getFixtureB().getUserData()));
-//						}
-//						else if (((String)contact.getFixtureB().getUserData()).equals("exit")){
-//							System.out.println("!!END IS INVOLVED!!! A is:" + ((String)contact.getFixtureA().getUserData()));
-//						}
+
 					
 					}
 					
