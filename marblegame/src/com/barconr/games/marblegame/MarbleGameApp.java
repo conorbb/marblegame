@@ -81,7 +81,7 @@ public class MarbleGameApp implements ApplicationListener {
 		}
 		
 		worldAccl = new Vector2();
-		System.out.println("Test!!!!!!!!!!!");
+		//System.out.println("Test!!!!!!!!!!!");
 
 	}
 
