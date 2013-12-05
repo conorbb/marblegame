@@ -98,16 +98,33 @@ public class Maze2Drenderer {
 
 		marbleSprite.setPosition((ballLoc.x*Assets.PIXELS_PER_METER)-8, (ballLoc.y*Assets.PIXELS_PER_METER)-8);
 		marbleSprite.draw(batcher);
-		if(physics.getWon()){
+		if(physics.getWon()&& physics.game.getTimeRemaining()>0){
 			font.draw(batcher, "Winner!", ballLoc.x*Assets.PIXELS_PER_METER, ballLoc.y*Assets.PIXELS_PER_METER);
 		}
 		
+		int [] time = getTimeString(physics.game.getTimeRemaining());
+		font.draw(batcher, "Time Left " +time[1] +":"+((time[2]<10 )? "0":"")+time[2], 0.1f*Assets.PIXELS_PER_METER, 0.2f*Assets.PIXELS_PER_METER);
 		batcher.end();
 		
 		//renderer.render(physics.getWorld(), debugProj);
 		
 
+		
 
+	}
+	
+	private int[] getTimeString(long value){
+		   
+			value = value /1000;
+		    int hours = (int) value / 3600;
+		    int remainder = (int) value - hours * 3600;
+		    int mins = remainder / 60;
+		    remainder = remainder - mins * 60;
+		    int secs = remainder;
+
+		    int[] ints = {hours , mins , secs};
+		    return ints;
+		
 	}
 }
 

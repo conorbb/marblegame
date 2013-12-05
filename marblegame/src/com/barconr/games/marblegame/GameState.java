@@ -1,4 +1,7 @@
 package com.barconr.games.marblegame;
+
+import com.badlogic.gdx.Gdx;
+
 /*
  * Copyright 2011 Conor Byrne (conor@barconr.com)
  * 
@@ -13,11 +16,16 @@ package com.barconr.games.marblegame;
  */
 public class GameState {
 	public boolean gameWon;
-	public float timeLeft;
+	private long timeLeft;
+	private long levelTime;
+	private long endTime;
+	private boolean gameStarted;
 	
 	public GameState(){
+		levelTime = 20 *1000; // 80 seconds
 		gameWon =false;
-		timeLeft = 0;
+		gameStarted = false;
+
 	}
 	
 	public void setTimeLeft(float time){
@@ -27,6 +35,28 @@ public class GameState {
 	public void timeUpdate(float delta){
 		timeLeft -= delta;
 	}
+	
+	public void startGame(){
+		gameStarted = true;
+		endTime = System.currentTimeMillis() + levelTime;
+		
+	}
+	
+	public long getTimeRemaining(){
+		if(endTime - System.currentTimeMillis()<=0){
+			return 0;
+		}
+		else{
+			return endTime - System.currentTimeMillis();
+		}
+		
+	}
+	
+	public boolean gameStarted(){
+		return gameStarted;
+	}
+	
+	
 	
 
 }

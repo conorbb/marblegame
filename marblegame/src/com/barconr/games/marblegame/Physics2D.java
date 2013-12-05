@@ -45,12 +45,21 @@ public class Physics2D {
 	static final int BOX_POSITION_ITERATIONS=2;  
 	Box2DDebugRenderer debugRenderer;
 
+	public GameState game;
 	boolean gameWon = false;
 
+	public Physics2D(){
+		game = new GameState();
+	}
 	
 
 	
 	public void simulate(){
+		
+		if(!game.gameStarted()){
+			game.startGame();
+		}
+			
 		
 		if(Gdx.input.isPeripheralAvailable(Peripheral.Accelerometer)){
 			world.setGravity(getAccel());
