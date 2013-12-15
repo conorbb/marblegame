@@ -92,7 +92,7 @@ public class Maze2Drenderer {
 		
 		batcher.end();
 		
-		//renderer.render(physics.getWorld(), debugProj);
+		renderer.render(physics.getWorld(), debugProj);
 		
 
 

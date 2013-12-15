@@ -32,7 +32,7 @@ public class Physics2D {
 	static final int BOX_VELOCITY_ITERATIONS=6;  
 	static final int BOX_POSITION_ITERATIONS=2;  
 	Box2DDebugRenderer debugRenderer;
-
+	Maze maze;
 	boolean gameWon = false;
 
 	
@@ -58,6 +58,9 @@ public class Physics2D {
 		TiledMapTileLayer tilelayer = (TiledMapTileLayer)(tiledmap.getLayers().get(0));
 		layerHeight = tilelayer.getHeight();
 		layerWidth = tilelayer.getWidth();
+		
+		maze = new Maze(layerWidth, layerHeight);
+		
 		tileHeight = tilelayer.getTileHeight();
 		tileWidth = tilelayer.getTileWidth();
 
@@ -66,7 +69,7 @@ public class Physics2D {
 		System.out.println("Tile count = "+ tilelayer.getObjects().getCount());
 		System.out.println("layer height pixels = " + (layerHeight*tileHeight) + "LAYER WIDTH PIXELS : " + (layerWidth*tileWidth) );
 
-		//Loop through tilemap
+		
 
 		//Create the box2d world
 		world = new World(new Vector2(0, -9), true); 
@@ -111,9 +114,7 @@ public class Physics2D {
 					squareBodyDef.position.add(tileWidth/2*Assets.METERS_PER_PIXEL, tileHeight/2*Assets.METERS_PER_PIXEL);	
 
 					Body squareBody = world.createBody(squareBodyDef);
-					//world.
-					//squareBody.setUserData("exit");
-					//Size of box
+
 					squareShape.setAsBox(tileWidth/2 * Assets.METERS_PER_PIXEL, tileHeight/2 * Assets.METERS_PER_PIXEL);
 					FixtureDef fixDefSquare = new FixtureDef();
 					
@@ -133,28 +134,14 @@ public class Physics2D {
 				if(impassibleBlock){
 
 					//Draw box for fixture that blocks
-					PolygonShape squareShape = new PolygonShape();
-					BodyDef squareBodyDef = new BodyDef();
-					squareBodyDef.type = BodyType.StaticBody;	//Static body which won't move
-					//Box position
-					squareBodyDef.position.set( new Vector2((x_pos* Assets.METERS_PER_PIXEL*tileWidth), (layerHeight-y_pos-1)* Assets.METERS_PER_PIXEL*tileHeight));
-					//Correction for fact Box2Ds squares are half width/height from center point
-					squareBodyDef.position.add(tileWidth/2*Assets.METERS_PER_PIXEL, tileHeight/2*Assets.METERS_PER_PIXEL);	
 
-					Body squareBody = world.createBody(squareBodyDef);
-					//Size of box
-					squareShape.setAsBox(tileWidth/2 * Assets.METERS_PER_PIXEL, tileHeight/2 * Assets.METERS_PER_PIXEL);
-					FixtureDef fixDefSquare = new FixtureDef();
-					fixDefSquare.shape = squareShape;
-					fixDefSquare.density = 0.1f;
-					fixDefSquare.restitution= 0.3f;
-					squareBody.createFixture(fixDefSquare);
-
+					
+					maze.setMazeUnit(new MazeUnit("block"), x_pos, y_pos);
 					//System.out.print("@");		// Draw ascii map in stdout
 
 				}
 				else{
-					//System.out.print("#");		// Draw ascii map in stdout
+					maze.setMazeUnit(new MazeUnit("passage"), x_pos, y_pos);
 				}
 
 			}
@@ -192,6 +179,35 @@ public class Physics2D {
 		Fixture fx = ballCircleBody.createFixture(ballFixtureDef);  
 		fx.setUserData("ball");
 
+		maze.removeExtraBoxes();
+		/*
+		PolygonShape squareShape = new PolygonShape();
+
+		*/
+		
+		for(int i =0; i < maze.width; i++){
+			for(int j=0; j< maze.height;j++){
+				if(maze.mazeUnits[j][i].getType().equals("block")){
+				BodyDef squareBodyDef = new BodyDef();
+				PolygonShape squareShape = new PolygonShape();
+				squareBodyDef.type = BodyType.StaticBody;	//Static body which won't move
+				//Box position
+				squareBodyDef.position.set( new Vector2((j* Assets.METERS_PER_PIXEL*tileWidth), (layerHeight-i-1)* Assets.METERS_PER_PIXEL*tileHeight));
+				//Correction for fact Box2Ds squares are half width/height from center point
+				squareBodyDef.position.add(tileWidth/2*Assets.METERS_PER_PIXEL, tileHeight/2*Assets.METERS_PER_PIXEL);	
+
+				Body squareBody = world.createBody(squareBodyDef);
+				//Size of box
+				squareShape.setAsBox(tileWidth/2 * Assets.METERS_PER_PIXEL, tileHeight/2 * Assets.METERS_PER_PIXEL);
+				FixtureDef fixDefSquare = new FixtureDef();
+				fixDefSquare.shape = squareShape;
+				fixDefSquare.density = 0.1f;
+				fixDefSquare.restitution= 0.3f;
+				squareBody.createFixture(fixDefSquare);
+				}
+			}
+		}
+		
 		
 
 }
