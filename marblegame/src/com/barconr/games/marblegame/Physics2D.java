@@ -1,4 +1,16 @@
 package com.barconr.games.marblegame;
+/*
+ * Copyright 2011 Conor Byrne (conor@barconr.com)
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS"
+ * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Peripheral;
@@ -32,13 +44,26 @@ public class Physics2D {
 	static final int BOX_VELOCITY_ITERATIONS=6;  
 	static final int BOX_POSITION_ITERATIONS=2;  
 	Box2DDebugRenderer debugRenderer;
+<<<<<<< HEAD
 	Maze maze;
+=======
+
+	public GameState game;
+>>>>>>> refs/remotes/origin/master
 	boolean gameWon = false;
 
+	public Physics2D(){
+		game = new GameState();
+	}
 	
 
 	
 	public void simulate(){
+		
+		if(!game.gameStarted()){
+			game.startGame();
+		}
+			
 		
 		if(Gdx.input.isPeripheralAvailable(Peripheral.Accelerometer)){
 			world.setGravity(getAccel());
