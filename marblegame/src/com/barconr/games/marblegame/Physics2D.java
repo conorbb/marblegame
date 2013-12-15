@@ -44,12 +44,12 @@ public class Physics2D {
 	static final int BOX_VELOCITY_ITERATIONS=6;  
 	static final int BOX_POSITION_ITERATIONS=2;  
 	Box2DDebugRenderer debugRenderer;
-<<<<<<< HEAD
+
 	Maze maze;
-=======
+
 
 	public GameState game;
->>>>>>> refs/remotes/origin/master
+
 	boolean gameWon = false;
 
 	public Physics2D(){
