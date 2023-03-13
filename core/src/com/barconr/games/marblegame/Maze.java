@@ -9,12 +9,17 @@ public class Maze{
 	public final int width;
 	public final int height;
 	public MazeUnit [][] mazeUnits; 
-	
+	public final String gameType;
+	public final boolean hasEnemy;
+	public final int timeLimit;
 	public Maze(int widthUnits, int heightUnits){
 		width = widthUnits;
 		height = heightUnits;
 		
 		mazeUnits = new MazeUnit[width][height];
+		gameType =new String("timed") ;
+		hasEnemy = false;
+		timeLimit = 60; // Time in seconds
 		
 		}
 	
